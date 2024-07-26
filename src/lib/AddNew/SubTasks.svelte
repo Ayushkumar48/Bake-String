@@ -1,0 +1,46 @@
+<script>
+  import SubTask from "./SubTask.svelte";
+  export let subtasks = [];
+
+  function handleSubtask() {
+    let newSubTask = {
+      title: "",
+      description: "",
+    };
+    subtasks = [...subtasks, newSubTask];
+  }
+
+  function handleUpdate(event, index) {
+    subtasks[index] = event.detail;
+    subtasks = [...subtasks];
+  }
+</script>
+
+<div>
+  {#each subtasks as subtask, index}
+    <SubTask
+      title={subtask.subtasktitle}
+      description={subtask.description}
+      on:update={(event) => handleUpdate(event, index)}
+    />
+  {/each}
+  <button on:click={handleSubtask}
+    ><img src="./src/assets/Add.svg" alt="add" /></button
+  >
+</div>
+
+<style>
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  button {
+    width: 40px;
+    opacity: 0.5;
+    transition: opacity 0.15s ease-in-out;
+  }
+  button:hover {
+    opacity: 1;
+  }
+</style>
