@@ -1,68 +1,26 @@
 <script>
   import Card from "./Card.svelte";
+  import { onDestroy } from "svelte";
+  import showAddWindow from "../Stores/store";
+  import { fade, slide } from "svelte/transition";
+  import { quintOut } from "svelte/easing";
 
   import AddNew from "../AddNew/AddNew.svelte";
+  let isVisible;
+
+  const unsubscribe = showAddWindow.subscribe((value) => {
+    isVisible = value;
+  });
+  onDestroy(() => {
+    unsubscribe();
+  });
   let cardData = [
     {
       id: 202223,
       title: "Grocery List",
-      item: [
+      subtasks: [
         {
-          title: "Milk",
-          description: "buy from xyx store",
-        },
-        {
-          title: "Ghee",
-          description: "buy from xyx store",
-        },
-        {
-          title: "Milk",
-          description: "buy from xyx store",
-        },
-      ],
-    },
-    {
-      id: 202223,
-      title: "Grocery List",
-      item: [
-        {
-          title: "Milk",
-          description: "buy from xyx store",
-        },
-        {
-          title: "Ghee",
-          description: "buy from xyx store",
-        },
-        {
-          title: "Milk",
-          description: "buy from xyx store",
-        },
-      ],
-    },
-    {
-      id: 202223,
-      title: "Grocery List",
-      item: [
-        {
-          title: "Milk",
-          description: "buy from xyx store",
-        },
-        {
-          title: "Ghee",
-          description: "buy from xyx store",
-        },
-        {
-          title: "Milk",
-          description: "buy from xyx store",
-        },
-      ],
-    },
-    {
-      id: 202223,
-      title: "Grocery List",
-      item: [
-        {
-          title: "Milk",
+          title_subtask: "Milk",
           description: "buy from xyx store",
         },
         {
@@ -80,17 +38,21 @@
     cardData = [...cardData, event.detail];
   }
   function refreshData(cardId) {
-    cardData = cardData.filter((card) => {
-      card.id !== cardId;
-    });
+    cardData = cardData.filter((card) => card.id !== cardId);
   }
 </script>
 
 <section>
   {#each cardData as card (card.id)}
-    <Card {card} onDelete={() => refreshData(card.id)} />
+    <div transition:fade class="cards">
+      <Card {card} onDelete={() => refreshData(card.id)} />
+    </div>
   {/each}
-  <AddNew on:newCard={handleCard} />
+  {#if isVisible}
+    <div class="addcard">
+      <AddNew on:newCard={handleCard} />
+    </div>
+  {/if}
 </section>
 
 <style>
@@ -100,5 +62,15 @@
     flex-wrap: wrap;
     gap: 2vw;
     justify-content: baseline;
+  }
+  .cards {
+    position: relative;
+    background-color: rgb(105, 192, 195);
+    padding: 1% 1%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 23%;
   }
 </style>

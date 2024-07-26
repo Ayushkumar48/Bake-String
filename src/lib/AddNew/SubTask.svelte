@@ -1,15 +1,15 @@
 <script>
   import { createEventDispatcher } from "svelte";
 
-  export let title = "";
+  export let title_subtask = "";
   export let description = "";
 
   const dispatch = createEventDispatcher();
 
-  $: dispatch("update", { title, description });
+  $: dispatch("update", { title_subtask, description });
 
   function updateSubtask() {
-    dispatch("update", { title, description });
+    dispatch("update", { title_subtask, description });
   }
 </script>
 
@@ -17,7 +17,7 @@
   <input
     type="text"
     id="subtasktitle"
-    bind:value={title}
+    bind:value={title_subtask}
     placeholder="subtask title"
     on:input={updateSubtask}
   />

@@ -1,10 +1,15 @@
 <script>
   import SubTask from "./SubTask.svelte";
-  export let subtasks = [];
+  export let subtasks = [
+    {
+      title_subtask: "",
+      description: "",
+    },
+  ];
 
   function handleSubtask() {
     let newSubTask = {
-      title: "",
+      title_subtask: "",
       description: "",
     };
     subtasks = [...subtasks, newSubTask];
@@ -19,7 +24,7 @@
 <div>
   {#each subtasks as subtask, index}
     <SubTask
-      title={subtask.subtasktitle}
+      title_subtask={subtask.title_subtask}
       description={subtask.description}
       on:update={(event) => handleUpdate(event, index)}
     />

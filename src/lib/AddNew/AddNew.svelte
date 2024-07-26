@@ -4,6 +4,8 @@
   import Add from "./Add.svelte";
   import { createEventDispatcher } from "svelte";
   import { v4 as uuidv4 } from "uuid";
+  import { fade, slide } from "svelte/transition";
+  import { quintOut } from "svelte/easing";
   const dispatch = createEventDispatcher();
   let title = "";
   let subtasks;
@@ -11,13 +13,21 @@
     let newTask = {
       id: uuidv4(),
       title,
-      item: subtasks,
+      subtasks: subtasks,
     };
     dispatch("newCard", newTask);
   }
 </script>
 
-<section class="newcard">
+<section
+  class="newcard"
+  transition:slide={{
+    delay: 250,
+    duration: 300,
+    easing: quintOut,
+    axis: "y",
+  }}
+>
   <div class="outer">
     <div class="inner">
       <p>Add new task</p>
@@ -40,7 +50,7 @@
     left: 0;
     right: 0;
     background-color: rgba(255, 255, 255, 0.65);
-    position: fixed;
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;

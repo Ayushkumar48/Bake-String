@@ -7,14 +7,14 @@
   }
 </script>
 
-<div class="card">
+<div>
   <button class="bin" on:click={handleClick}
     ><img src="./src/assets/Trashcan.svg" alt="trashcan" /></button
   >
   <p>{card.title}</p>
   <ul>
-    {#each card.item as item}
-      <Item title={item.title}>{item.description}</Item>
+    {#each card.subtasks as item}
+      <Item title={item.title_subtask}>{item.description}</Item>
     {/each}
   </ul>
 </div>
@@ -30,17 +30,6 @@
     width: 8%;
     top: 11%;
     right: 6%;
-  }
-  .card {
-    position: relative;
-    background-color: rgb(105, 192, 195);
-    padding: 1% 1%;
-    border-radius: 10px;
-    display: flex;
-    /* justify-content: space-around; */
-    flex-direction: column;
-    gap: 10px;
-    min-width: 23%;
   }
   ul {
     list-style-type: none;

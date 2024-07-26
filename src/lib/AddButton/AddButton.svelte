@@ -1,10 +1,7 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-  const dispatch = createEventDispatcher();
+  import showAddWindow from "../Stores/store";
   function handleClick() {
-    dispatch("addclicked", {
-      text: "open",
-    });
+    showAddWindow.update((value) => !value);
   }
 </script>
 
