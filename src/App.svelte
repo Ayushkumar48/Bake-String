@@ -8,7 +8,7 @@
   // fetch todos
   const fetchTodos = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/todos");
+      const response = await axios.get("https://bakestring.tech/todos");
       cardData = response.data;
     } catch (err) {
       console.log("Error fetching todos: ", err);

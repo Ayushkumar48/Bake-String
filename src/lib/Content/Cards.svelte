@@ -13,7 +13,10 @@
   // add new todo
   const addTodo = async (newCard) => {
     try {
-      const response = await axios.post("http://localhost:3000/todos", newCard);
+      const response = await axios.post(
+        "https://bakestring.tech/todos",
+        newCard
+      );
       cardData = [...cardData, response.data];
     } catch (err) {
       console.log("Failed to add data: ", err);
@@ -23,7 +26,9 @@
   // delete todos by id
   const deleteTodo = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:3000/todos/${id}`);
+      const response = await axios.delete(
+        `https://bakestring.tech/todos/${id}`
+      );
       cardData = cardData.filter((card) => card._id !== id);
     } catch (err) {
       console.log("Could not delete data: ", err);
