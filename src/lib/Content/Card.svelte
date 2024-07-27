@@ -27,9 +27,16 @@
   .bin {
     position: absolute;
     direction: rtl;
-    width: 8%;
+    width: 35px;
+    border-radius: 100px;
+    background-color: cadetblue;
+    padding: 2px;
     top: 11%;
     right: 6%;
+    transition: background-color 0.2s ease-in-out;
+  }
+  .bin:hover {
+    background-color: rgb(19, 146, 151);
   }
   ul {
     list-style-type: none;

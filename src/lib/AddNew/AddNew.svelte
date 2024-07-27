@@ -3,7 +3,6 @@
   import SubTasks from "./SubTasks.svelte";
   import Add from "./Add.svelte";
   import { createEventDispatcher } from "svelte";
-  import { v4 as uuidv4 } from "uuid";
   import { fade, slide } from "svelte/transition";
   import { quintOut } from "svelte/easing";
   const dispatch = createEventDispatcher();
@@ -11,7 +10,6 @@
   let subtasks;
   function handleAdd() {
     let newTask = {
-      id: uuidv4(),
       title,
       subtasks: subtasks,
     };

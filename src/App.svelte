@@ -1,22 +1,28 @@
 <script>
   import Navbar from "./lib/Navbar/Navbar.svelte";
   import Content from "./lib/Content/Content.svelte";
-  import AddButton from "./lib/AddButton/AddButton.svelte";
+  import { onMount } from "svelte";
+  import axios from "axios";
+
+  let cardData = [];
+  // fetch todos
+  const fetchTodos = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/todos");
+      cardData = response.data;
+    } catch (err) {
+      console.log("Error fetching todos: ", err);
+    }
+  };
+  onMount(() => {
+    fetchTodos();
+  });
 </script>
 
 <div>
   <Navbar />
-  <div class="button">
-    <AddButton />
-  </div>
-  <Content />
+  <Content {cardData} />
 </div>
 
 <style>
-  .button {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 5%;
-  }
 </style>

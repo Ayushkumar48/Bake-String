@@ -22,6 +22,5 @@
   }
   div {
     direction: rtl;
-    margin-top: 10vh;
   }
 </style>

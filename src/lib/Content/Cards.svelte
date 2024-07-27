@@ -1,12 +1,34 @@
 <script>
+  import axios from "axios";
   import Card from "./Card.svelte";
   import { onDestroy } from "svelte";
   import showAddWindow from "../Stores/store";
-  import { fade, slide } from "svelte/transition";
-  import { quintOut } from "svelte/easing";
-
+  import { fade, scale } from "svelte/transition";
+  import { flip } from "svelte/animate";
   import AddNew from "../AddNew/AddNew.svelte";
+
   let isVisible;
+  export let cardData;
+
+  // add new todo
+  const addTodo = async (newCard) => {
+    try {
+      const response = await axios.post("http://localhost:3000/todos", newCard);
+      cardData = [...cardData, response.data];
+    } catch (err) {
+      console.log("Failed to add data: ", err);
+    }
+  };
+
+  // delete todos by id
+  const deleteTodo = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:3000/todos/${id}`);
+      cardData = cardData.filter((card) => card._id !== id);
+    } catch (err) {
+      console.log("Could not delete data: ", err);
+    }
+  };
 
   const unsubscribe = showAddWindow.subscribe((value) => {
     isVisible = value;
@@ -14,38 +36,19 @@
   onDestroy(() => {
     unsubscribe();
   });
-  let cardData = [
-    {
-      id: 202223,
-      title: "Grocery List",
-      subtasks: [
-        {
-          title_subtask: "Milk",
-          description: "buy from xyx store",
-        },
-        {
-          title: "Ghee",
-          description: "buy from xyx store",
-        },
-        {
-          title: "Milk",
-          description: "buy from xyx store",
-        },
-      ],
-    },
-  ];
   function handleCard(event) {
-    cardData = [...cardData, event.detail];
+    const newCard = event.detail;
+    addTodo(newCard);
   }
   function refreshData(cardId) {
-    cardData = cardData.filter((card) => card.id !== cardId);
+    deleteTodo(cardId);
   }
 </script>
 
 <section>
-  {#each cardData as card (card.id)}
-    <div transition:fade class="cards">
-      <Card {card} onDelete={() => refreshData(card.id)} />
+  {#each cardData as card (card._id)}
+    <div in:fade out:scale animate:flip={{ duration: 500 }} class="cards">
+      <Card {card} onDelete={() => refreshData(card._id)} />
     </div>
   {/each}
   {#if isVisible}

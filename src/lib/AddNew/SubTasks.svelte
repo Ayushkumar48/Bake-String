@@ -1,5 +1,6 @@
 <script>
   import SubTask from "./SubTask.svelte";
+  import { scale } from "svelte/transition";
   export let subtasks = [
     {
       title_subtask: "",
@@ -21,13 +22,15 @@
   }
 </script>
 
-<div>
+<div class="outer">
   {#each subtasks as subtask, index}
-    <SubTask
-      title_subtask={subtask.title_subtask}
-      description={subtask.description}
-      on:update={(event) => handleUpdate(event, index)}
-    />
+    <div class="inner" transition:scale>
+      <SubTask
+        title_subtask={subtask.title_subtask}
+        description={subtask.description}
+        on:update={(event) => handleUpdate(event, index)}
+      />
+    </div>
   {/each}
   <button on:click={handleSubtask}
     ><img src="./src/assets/Add.svg" alt="add" /></button
@@ -35,10 +38,11 @@
 </div>
 
 <style>
-  div {
+  .outer {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    transition: height 0.5s ease-in-out;
   }
   button {
     width: 40px;
