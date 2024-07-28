@@ -1,7 +1,7 @@
 <script>
   import axios from "axios";
   import Card from "./Card.svelte";
-  import { onDestroy, onMount } from "svelte";
+  import { onDestroy } from "svelte";
   import showAddWindow from "../Stores/store";
   import { fade, scale } from "svelte/transition";
   import { flip } from "svelte/animate";
@@ -12,16 +12,6 @@
 
   // Use environment variable for base URL
   const baseURL = import.meta.env.VITE_API_BASE_URL || "https://localhost:3000";
-
-  // Fetch todos from MongoDB backend
-  const fetchTodos = async () => {
-    try {
-      const response = await axios.get(`${baseURL}/todos`);
-      cardData = response.data;
-    } catch (err) {
-      console.log("Failed to fetch data: ", err);
-    }
-  };
 
   // Add new todo
   const addTodo = async (newCard) => {
@@ -59,11 +49,6 @@
   function refreshData(cardId) {
     deleteTodo(cardId);
   }
-
-  // Fetch initial data on component mount
-  onMount(() => {
-    fetchTodos();
-  });
 </script>
 
 <section>

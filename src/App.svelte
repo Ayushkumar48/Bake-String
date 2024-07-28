@@ -6,9 +6,10 @@
 
   let cardData = [];
   // fetch todos
+  const baseURL = import.meta.env.VITE_API_BASE_URL || "https://localhost:3000";
   const fetchTodos = async () => {
     try {
-      const response = await axios.get("https://bakestring.tech/todos");
+      const response = await axios.get(`${baseURL}/todos`);
       cardData = response.data;
     } catch (err) {
       console.log("Error fetching todos: ", err);
