@@ -33,7 +33,7 @@
     </div>
   {/each}
   <button on:click={handleSubtask}
-    ><img src="./src/assets/Add.svg" alt="add" /></button
+    ><img src="./Trashcan.svg" alt="add" /></button
   >
 </div>
 
