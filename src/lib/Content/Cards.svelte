@@ -1,34 +1,41 @@
 <script>
   import axios from "axios";
   import Card from "./Card.svelte";
-  import { onDestroy } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import showAddWindow from "../Stores/store";
   import { fade, scale } from "svelte/transition";
   import { flip } from "svelte/animate";
   import AddNew from "../AddNew/AddNew.svelte";
 
   let isVisible;
-  export let cardData;
+  export let cardData = [];
 
-  // add new todo
+  const baseURL = "https://bakestring.tech";
+
+  // Fetch todos from MongoDB backend
+  const fetchTodos = async () => {
+    try {
+      const response = await axios.get(`${baseURL}/todos`);
+      cardData = response.data;
+    } catch (err) {
+      console.log("Failed to fetch data: ", err);
+    }
+  };
+
+  // Add new todo
   const addTodo = async (newCard) => {
     try {
-      const response = await axios.post(
-        "https://bakestring.tech/todos",
-        newCard
-      );
+      const response = await axios.post(`${baseURL}/todos`, newCard);
       cardData = [...cardData, response.data];
     } catch (err) {
       console.log("Failed to add data: ", err);
     }
   };
 
-  // delete todos by id
+  // Delete todo by id
   const deleteTodo = async (id) => {
     try {
-      const response = await axios.delete(
-        `https://bakestring.tech/todos/${id}`
-      );
+      await axios.delete(`${baseURL}/todos/${id}`);
       cardData = cardData.filter((card) => card._id !== id);
     } catch (err) {
       console.log("Could not delete data: ", err);
@@ -38,16 +45,24 @@
   const unsubscribe = showAddWindow.subscribe((value) => {
     isVisible = value;
   });
+
   onDestroy(() => {
     unsubscribe();
   });
+
   function handleCard(event) {
     const newCard = event.detail;
     addTodo(newCard);
   }
+
   function refreshData(cardId) {
     deleteTodo(cardId);
   }
+
+  // Fetch initial data on component mount
+  onMount(() => {
+    fetchTodos();
+  });
 </script>
 
 <section>
