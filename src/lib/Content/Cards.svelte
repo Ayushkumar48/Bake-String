@@ -1,7 +1,7 @@
 <script>
   import axios from "axios";
   import Card from "./Card.svelte";
-  import { onDestroy } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import showAddWindow from "../Stores/store";
   import { fade, scale } from "svelte/transition";
   import { flip } from "svelte/animate";
@@ -13,10 +13,20 @@
   // Use environment variable for base URL
   const baseURL = import.meta.env.VITE_API_BASE_URL || "https://localhost:3000";
 
+  // Fetch todos from MongoDB backend
+  const fetchTodos = async () => {
+    try {
+      const response = await axios.get(`${baseURL}/`);
+      cardData = response.data;
+    } catch (err) {
+      console.log("Failed to fetch data: ", err);
+    }
+  };
+
   // Add new todo
   const addTodo = async (newCard) => {
     try {
-      const response = await axios.post(`${baseURL}/todos`, newCard);
+      const response = await axios.post(`${baseURL}/`, newCard);
       cardData = [...cardData, response.data];
     } catch (err) {
       console.log("Failed to add data: ", err);
@@ -26,7 +36,7 @@
   // Delete todo by id
   const deleteTodo = async (id) => {
     try {
-      await axios.delete(`${baseURL}/todos/${id}`);
+      await axios.delete(`${baseURL}/${id}`);
       cardData = cardData.filter((card) => card._id !== id);
     } catch (err) {
       console.log("Could not delete data: ", err);
@@ -49,6 +59,11 @@
   function refreshData(cardId) {
     deleteTodo(cardId);
   }
+
+  // Fetch initial data on component mount
+  onMount(() => {
+    fetchTodos();
+  });
 </script>
 
 <section>

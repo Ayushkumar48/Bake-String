@@ -9,7 +9,7 @@
   const baseURL = import.meta.env.VITE_API_BASE_URL || "https://localhost:3000";
   const fetchTodos = async () => {
     try {
-      const response = await axios.get(`${baseURL}/todos`);
+      const response = await axios.get(`${baseURL}/`);
       cardData = response.data;
     } catch (err) {
       console.log("Error fetching todos: ", err);
