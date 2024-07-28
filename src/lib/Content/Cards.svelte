@@ -10,7 +10,7 @@
   let isVisible;
   export let cardData = [];
 
-  const baseURL = "https://bakestring.tech";
+  const baseURL = import.meta.env.VITE_API_BASE_URL || "https://localhost:3000";
 
   // Fetch todos from MongoDB backend
   const fetchTodos = async () => {

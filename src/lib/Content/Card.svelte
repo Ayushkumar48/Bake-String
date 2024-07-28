@@ -9,7 +9,7 @@
 
 <div>
   <button class="bin" on:click={handleClick}
-    ><img src="./src/assets/Trashcan.svg" alt="trashcan" /></button
+    ><img src="./Trashcan.svg" alt="trashcan" /></button
   >
   <p>{card.title}</p>
   <ul>
