@@ -6,7 +6,7 @@
 
   let cardData = [];
   // fetch todos
-  const baseURL = import.meta.env.VITE_API_BASE_URL || "https://localhost:3000";
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
   const fetchTodos = async () => {
     try {
       const response = await axios.get(`${baseURL}/`);

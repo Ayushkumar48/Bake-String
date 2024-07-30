@@ -11,7 +11,7 @@
   export let cardData = [];
 
   // Use environment variable for base URL
-  const baseURL = import.meta.env.VITE_API_BASE_URL || "https://localhost:3000";
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
   console.log(`Using base URL: ${baseURL}`); // Log base URL for debugging
 
   // Fetch todos from MongoDB backend
