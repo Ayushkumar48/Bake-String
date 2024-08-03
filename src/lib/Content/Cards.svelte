@@ -1,55 +1,31 @@
 <script>
   import axios from "axios";
   import Card from "./Card.svelte";
-  import { onDestroy, onMount } from "svelte";
-  import showAddWindow from "../Stores/store";
   import { fade, scale } from "svelte/transition";
   import { flip } from "svelte/animate";
   import AddNew from "../AddNew/AddNew.svelte";
+  import { isVisible } from "../Stores/store";
 
-  let isVisible;
   export let cardData = [];
-
-  // Use environment variable for base URL
   const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-  // Fetch todos from MongoDB backend
-  const fetchTodos = async () => {
-    try {
-      const response = await axios.get(`${baseURL}/`);
-      cardData = response.data;
-    } catch (err) {
-      console.log("Failed to fetch data: ", err);
-    }
-  };
-
-  // Add new todo
   const addTodo = async (newCard) => {
     try {
-      const response = await axios.post(`${baseURL}/`, newCard);
+      const response = await axios.post(`${baseURL}/addTodo`, newCard);
       cardData = [...cardData, response.data];
     } catch (err) {
       console.log("Failed to add data: ", err);
     }
   };
 
-  // Delete todo by id
-  const deleteTodo = async (id) => {
+  const deleteTodo = async (_id) => {
     try {
-      await axios.delete(`${baseURL}/${id}`);
-      cardData = cardData.filter((card) => card._id !== id);
+      const response = await axios.post(`${baseURL}/deleteTodo`, { _id });
+      cardData = cardData.filter((card) => card._id !== response.data._id);
     } catch (err) {
       console.log("Could not delete data: ", err);
     }
   };
-
-  const unsubscribe = showAddWindow.subscribe((value) => {
-    isVisible = value;
-  });
-
-  onDestroy(() => {
-    unsubscribe();
-  });
 
   function handleCard(event) {
     const newCard = event.detail;
@@ -59,11 +35,6 @@
   function refreshData(cardId) {
     deleteTodo(cardId);
   }
-
-  // Fetch initial data on component mount
-  onMount(() => {
-    fetchTodos();
-  });
 </script>
 
 <section>
@@ -72,7 +43,7 @@
       <Card {card} onDelete={() => refreshData(card._id)} />
     </div>
   {/each}
-  {#if isVisible}
+  {#if $isVisible}
     <div class="addcard">
       <AddNew on:newCard={handleCard} />
     </div>

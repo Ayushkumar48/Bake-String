@@ -1,7 +1,8 @@
 <script>
-  import showAddWindow from "../Stores/store";
+  import { isVisible } from "../Stores/store";
+
   function handleClick() {
-    showAddWindow.update((value) => !value);
+    $isVisible = true;
   }
 </script>
 

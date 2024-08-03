@@ -3,17 +3,23 @@
   import SubTasks from "./SubTasks.svelte";
   import Add from "./Add.svelte";
   import { createEventDispatcher } from "svelte";
-  import { fade, slide } from "svelte/transition";
+  import { slide } from "svelte/transition";
   import { quintOut } from "svelte/easing";
+  import { isVisible } from "../Stores/store";
   const dispatch = createEventDispatcher();
   let title = "";
   let subtasks;
+  let userId = localStorage.getItem("userId");
   function handleAdd() {
     let newTask = {
+      userId,
       title,
-      subtasks: subtasks,
+      subtasks,
     };
     dispatch("newCard", newTask);
+  }
+  function handleClose() {
+    $isVisible = false;
   }
 </script>
 
@@ -27,6 +33,9 @@
   }}
 >
   <div class="outer">
+    <button on:click={handleClose}
+      ><img src="./Close.svg" alt="closebutton" /></button
+    >
     <div class="inner">
       <p>Add new task</p>
       <Title bind:title />
@@ -41,6 +50,7 @@
     background-color: blanchedalmond;
     padding: 30px;
     border-radius: 20px;
+    position: relative;
   }
   section {
     top: 0;
@@ -52,7 +62,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* z-index: 1000; */
   }
   .inner {
     display: flex;
@@ -61,5 +70,11 @@
   }
   p {
     text-align: center;
+  }
+  button {
+    position: absolute;
+    width: 40px;
+    right: 4%;
+    top: 5%;
   }
 </style>

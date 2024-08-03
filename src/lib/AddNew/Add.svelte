@@ -1,10 +1,10 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import showAddWindow from "../Stores/store";
+  import { isVisible } from "../Stores/store";
   const dispatch = createEventDispatcher();
   function dispatchAdd() {
     dispatch("add");
-    showAddWindow.update((value) => !value);
+    $isVisible = false;
   }
 </script>
 

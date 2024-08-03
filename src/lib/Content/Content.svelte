@@ -1,7 +1,24 @@
 <script>
   import Cards from "./Cards.svelte";
   import AddButton from "../AddButton/AddButton.svelte";
-  export let cardData;
+  import { onMount } from "svelte";
+  import axios from "axios";
+  let cardData = [];
+  const baseURL = import.meta.env.VITE_API_BASE_URL;
+
+  const fetchTodos = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const response = await axios.post(`${baseURL}/todos`, { userId });
+      cardData = response.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  onMount(() => {
+    fetchTodos();
+  });
+  export { fetchTodos };
 </script>
 
 <section>

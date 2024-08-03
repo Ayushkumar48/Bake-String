@@ -1,28 +1,59 @@
 <script>
   import Navbar from "./lib/Navbar/Navbar.svelte";
   import Content from "./lib/Content/Content.svelte";
+  import Home from "./lib/Home/Home.svelte";
   import { onMount } from "svelte";
-  import axios from "axios";
+  import {
+    showHome,
+    showLogin,
+    showSignUp,
+    showContent,
+    showLogout,
+  } from "./lib/Stores/store";
+  import Login from "./lib/Login/Login.svelte";
+  import SignUp from "./lib/Login/SignUp.svelte";
+  let contentComponent;
 
-  let cardData = [];
-  // fetch todos
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
-  const fetchTodos = async () => {
-    try {
-      const response = await axios.get(`${baseURL}/`);
-      cardData = response.data;
-    } catch (err) {
-      console.log("Error fetching todos: ", err);
+  function handleLoginSuccess() {
+    if (contentComponent) {
+      contentComponent.fetchTodos();
     }
-  };
+  }
+
   onMount(() => {
-    fetchTodos();
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      // Update state
+      showContent.set(true);
+      showSignUp.set(false);
+      showLogin.set(false);
+      showHome.set(false);
+      showLogout.set(true);
+
+      // Redirect after state has been set
+      setTimeout(() => {
+        if (window.location.pathname !== "/todos") {
+          window.location.replace("/todos");
+        }
+      }, 0);
+    }
   });
 </script>
 
 <div>
   <Navbar />
-  <Content {cardData} />
+  {#if $showHome}
+    <Home />
+  {/if}
+  {#if $showLogin}
+    <Login on:loginSuccess={handleLoginSuccess} />
+  {/if}
+  {#if $showSignUp}
+    <SignUp />
+  {/if}
+  {#if $showContent}
+    <Content bind:this={contentComponent} />
+  {/if}
 </div>
 
 <style>
