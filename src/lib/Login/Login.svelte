@@ -13,6 +13,10 @@
   let username, password;
   const baseURL = import.meta.env.VITE_API_BASE_URL;
   const handleLogin = async () => {
+    if (!baseURL) {
+      console.error("API base URL is not defined.");
+      return;
+    }
     try {
       const response = await axios.post(`${baseURL}/userlogin`, {
         username,
@@ -37,7 +41,7 @@
     }
   };
   function handleEnterKey(e) {
-    if (e.keycode === 13) {
+    if (e.key === "Enter") {
       handleLogin();
     }
   }
