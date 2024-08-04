@@ -2,7 +2,7 @@
   import Navbar from "./lib/Navbar/Navbar.svelte";
   import Content from "./lib/Content/Content.svelte";
   import Home from "./lib/Home/Home.svelte";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import {
     showHome,
     showLogin,
@@ -22,15 +22,21 @@
 
   onMount(() => {
     const userId = localStorage.getItem("userId");
-    if (userId && window.location.pathname !== "/todos") {
+    if (userId) {
       showContent.set(true);
       showSignUp.set(false);
       showLogin.set(false);
       showHome.set(false);
       showLogout.set(true);
-      setTimeout(() => {
+      if (window.location.pathname !== "/todos") {
         window.location.replace("/todos");
-      }, 0);
+      }
+    } else {
+      showContent.set(false);
+      showSignUp.set(true);
+      showLogin.set(true);
+      showHome.set(true);
+      showLogout.set(false);
     }
   });
 </script>
