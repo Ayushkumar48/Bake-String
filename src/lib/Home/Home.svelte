@@ -7,23 +7,24 @@
     showLogout,
     showSignUp,
   } from "../Stores/store";
+
+  function redirectToTodos() {
+    if (window.location.pathname !== "/todos") {
+      window.location.replace("/todos");
+    }
+  }
+
   onMount(() => {
     const userId = localStorage.getItem("userId");
+    console.log(`userId: ${userId}`);
     if (userId) {
+      redirectToTodos();
+      sessionStorage.setItem("redirected", "true");
       showContent.set(true);
       showSignUp.set(false);
       showLogin.set(false);
       showHome.set(false);
       showLogout.set(true);
-      if (window.location.pathname !== "/todos") {
-        window.location.replace("/todos");
-      }
-    } else {
-      showContent.set(false);
-      showSignUp.set(true);
-      showLogin.set(true);
-      showHome.set(true);
-      showLogout.set(false);
     }
   });
 </script>
