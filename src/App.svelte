@@ -29,9 +29,7 @@
       showHome.set(false);
       showLogout.set(true);
       setTimeout(() => {
-        if (window.location.pathname !== "/todos") {
-          window.location.replace("/todos");
-        }
+        window.location.replace("/todos");
       }, 0);
     }
   });
