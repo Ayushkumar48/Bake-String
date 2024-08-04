@@ -3,21 +3,26 @@
   import AddButton from "../AddButton/AddButton.svelte";
   import { onMount } from "svelte";
   import axios from "axios";
+
   let cardData = [];
   const baseURL = import.meta.env.VITE_API_BASE_URL;
 
   const fetchTodos = async () => {
     try {
       const userId = localStorage.getItem("userId");
-      const response = await axios.post(`${baseURL}/todos`, { userId });
+      const response = await axios.get(`${baseURL}/todos`, {
+        params: { userId }, // Pass userId as a query parameter
+      });
       cardData = response.data;
     } catch (err) {
       console.log(err);
     }
   };
+
   onMount(() => {
     fetchTodos();
   });
+
   export { fetchTodos };
 </script>
 
