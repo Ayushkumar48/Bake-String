@@ -22,15 +22,12 @@
 
   onMount(() => {
     const userId = localStorage.getItem("userId");
-    if (userId) {
-      // Update state
+    if (userId && window.location.pathname !== "/todos") {
       showContent.set(true);
       showSignUp.set(false);
       showLogin.set(false);
       showHome.set(false);
       showLogout.set(true);
-
-      // Redirect after state has been set
       setTimeout(() => {
         if (window.location.pathname !== "/todos") {
           window.location.replace("/todos");
